@@ -1,0 +1,20 @@
+.header {
+  position: sticky;
+  top: 0;
+  background: #bdbfc4;
+  color: #e5e7eb;
+  padding: 12px 24px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.brand {
+  font-weight: 700;
+  color: #22d3ee;
+  margin-right: 24px;
+}
