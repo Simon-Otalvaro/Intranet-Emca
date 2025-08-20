@@ -8,7 +8,7 @@ export default function Header() {
     <header className="header">
       <nav className="nav">
         <a href="/">
-           <img className="img-header" src="/img/logo-color.png" alt="Logo" />
+           <img className="img-header" src="src/assets/images/logo-color.png" alt="Logo" />
         </a> 
         <hr className="divider" />
         <h1 className="title-header">INTRANET - EMPRESAS PÚBLICAS DE CALARCÁ E.S.P</h1>
