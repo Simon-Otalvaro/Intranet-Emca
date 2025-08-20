@@ -1,0 +1,81 @@
+/* Botón hamburguesa */
+.menu-btn {
+  position: absolute;   
+  top: 120px;         /* debajo del header */
+  left: 1rem;         
+  width: 35px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 999; 
+}
+
+.menu-btn span {
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: #333;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+/* Animación al abrir */
+.menu-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+.menu-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.menu-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Menú flotante */
+.menu {
+  position: fixed;
+  top: 100px;   
+  right: -250px; 
+  width: 250px;
+  height: calc(100% - 100px);
+
+  /* Gradiente personalizado */
+  background: -webkit-linear-gradient(90deg,#121959,#172179,#384194); 
+  background: linear-gradient(90deg,#121959,#172179,#384194); 
+  color: white;
+  padding-top: 2rem;
+  transition: right 0.3s ease;  
+  z-index: 998;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3); 
+}
+
+.menu.active {
+  right: 0;  /* aparece derecha */
+}
+
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.menu a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  transition: color 0.2s;
+}
+
+.menu a:hover {
+  color: #ffca28;
+}

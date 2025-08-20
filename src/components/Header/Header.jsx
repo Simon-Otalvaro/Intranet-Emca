@@ -18,6 +18,10 @@ export default function Header() {
          </div>
       </nav>
       <a className="login-button" href="/login">INGRESAR</a>
+      <div>
+        <hr className="divider" />
+      </div>
     </header>
   );
 }
+  
