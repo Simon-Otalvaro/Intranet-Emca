@@ -1,23 +1,27 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Menu from "./components/Menu/Menu";
-import Slider from "./components/Slider/Slider"; 
-import "./App.css"; 
+import Home from "./pages/Home/Home";
+import Nosotros from "./pages/Nosotros/Nosotros";
+import Utilidades from "./pages/Utilidades/Utilidades";
+import Eventos from "./pages/Eventos/Eventos";
+import "./App.css";
 
 export default function App() {
   return (
-    <>
+    <Router>
       <Header />
       <div>
         <hr className="hr-line" />
       </div>
-      <Menu /> 
-      <div className="hero">
-        <h1 className="hero-title">BIENVENIDO A INTRANET DE EMCA E.S.P</h1>
-        <p className="hero-subtitle">
-          Aquí encontrarás utilidades, información sobre nosotros, eventos y noticias más importantes de la empresa.
-        </p>
-      </div>
-      <Slider />
-    </>
+      <Menu />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/nosotros" element={<Nosotros />} />
+        <Route path="/utilidades" element={<Utilidades />} />
+        <Route path="/eventos" element={<Eventos />} />
+      </Routes>
+    </Router>
   );
 }

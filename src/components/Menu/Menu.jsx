@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Menu.css";
 
 export default function Menu() {
@@ -6,7 +7,6 @@ export default function Menu() {
 
   return (
     <>
-      {/* Menú hamburguesa */}
       <button 
         className={`menu-btn ${open ? "open" : ""}`} 
         onClick={() => setOpen(!open)}
@@ -16,12 +16,17 @@ export default function Menu() {
         <span></span>
       </button>
 
-      {/* Menú flotante */}
       <nav className={`menu ${open ? "active" : ""}`}>
         <ul>
-          <li><a href="/utilidades">Utilidades</a></li>
-          <li><a href="/nosotros">Nosotros</a></li>
-          <li><a href="/eventos">Eventos</a></li>
+          <li>
+            <Link to="/utilidades" onClick={() => setOpen(false)}>Utilidades</Link>
+          </li>
+          <li>
+            <Link to="/nosotros" onClick={() => setOpen(false)}>Nosotros</Link>
+          </li>
+          <li>
+            <Link to="/eventos" onClick={() => setOpen(false)}>Eventos</Link>
+          </li>
         </ul>
       </nav>
     </>
