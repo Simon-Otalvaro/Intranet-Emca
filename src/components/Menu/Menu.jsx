@@ -19,6 +19,9 @@ export default function Menu() {
       <nav className={`menu ${open ? "active" : ""}`}>
         <ul>
           <li>
+            <Link to="/" onClick={() => setOpen(false)}>Inicio</Link>
+          </li>
+          <li>
             <Link to="/utilidades" onClick={() => setOpen(false)}>Utilidades</Link>
           </li>
           <li>
@@ -26,6 +29,9 @@ export default function Menu() {
           </li>
           <li>
             <Link to="/eventos" onClick={() => setOpen(false)}>Eventos</Link>
+          </li>
+          <li>
+            <Link to="/noticias" onClick={() => setOpen(false)}>Noticias</Link>
           </li>
         </ul>
       </nav>
