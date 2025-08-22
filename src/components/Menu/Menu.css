@@ -18,13 +18,13 @@
   display: block;
   height: 4px;
   width: 100%;
-  background: #333;
+  background: #32A7D9;
   border-radius: 4px;
   transition: 0.3s ease;
 }
 
 .title {
-  color: rgb(20, 189, 4);
+  color: #B4CC3D;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -47,8 +47,6 @@
   right: -250px; 
   width: 250px;
   height: calc(100% - 100px);
-
-  /* Gradiente personalizado */
   background: -webkit-linear-gradient(90deg,#121959,#172179,#384194); 
   background: linear-gradient(90deg,#121959,#172179,#384194); 
   color: white;
@@ -61,6 +59,7 @@
 .menu.active {
   right: 0;  /* aparece derecha */
 }
+
 
 .menu ul {
   list-style: none;
