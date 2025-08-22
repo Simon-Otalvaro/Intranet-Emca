@@ -35,11 +35,12 @@ export default function Nosotros() {
       <section className="nosotros-valores">
         <h2>Nuestros Valores</h2>
         <ul>
-          <li>✔ Transparencia</li>
+          <li>✔ Honestidad</li>
           <li>✔ Compromiso</li>
-          <li>✔ Responsabilidad social</li>
-          <li>✔ Innovación</li>
-          <li>✔ Excelencia</li>
+          <li>✔ Respeto</li>
+          <li>✔ Diligencia</li>
+          <li>✔ Justicia</li>
+          <li>✔ Confianza</li>
         </ul>
       </section>
     </div>

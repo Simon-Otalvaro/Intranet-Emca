@@ -16,7 +16,10 @@ export default function Menu() {
         <span></span>
       </button>
 
+      
+
       <nav className={`menu ${open ? "active" : ""}`}>
+        <h1 className="title">Menú IntraNet</h1>
         <ul>
           <li>
             <Link to="/" onClick={() => setOpen(false)}>Inicio</Link>
