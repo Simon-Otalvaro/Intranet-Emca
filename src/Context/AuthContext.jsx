@@ -4,7 +4,6 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    // Cargar usuario guardado al iniciar
     return JSON.parse(localStorage.getItem("user")) || null;
   });
 
@@ -19,7 +18,6 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    // Sincroniza si cambian otros tabs
     const handleStorage = () => {
       setUser(JSON.parse(localStorage.getItem("user")) || null);
     };

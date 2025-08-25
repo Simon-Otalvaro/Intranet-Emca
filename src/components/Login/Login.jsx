@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
+import { FiUser, FiLock } from "react-icons/fi"; 
 import "./Login.css";
 
 export default function Login({ onClose }) {
@@ -18,7 +19,7 @@ export default function Login({ onClose }) {
       login(username);
       if (username === "admin") navigate("/admin");
       if (username === "comunicaciones") navigate("/comunicaciones");
-      if (onClose) onClose(); // <- CIERRA EL MODAL
+      if (onClose) onClose();
     } else {
       setError("Usuario o contraseña incorrectos");
     }
@@ -27,10 +28,14 @@ export default function Login({ onClose }) {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
+        
+      <div className="login-logo">
+        <img src="src/assets/images/logo-color.png" alt="EMCA Logo" className="logo-image" />
+      </div>
         <h2 className="login-title">Iniciar Sesión</h2>
-        {error && <p className="login-error">{error}</p>}
-
         <div className="input-group">
+          <FiUser className="input-icon" />  
+          <p>Ingresa tu usuario:</p>
           <input
             type="text"
             placeholder="Usuario"
@@ -40,6 +45,8 @@ export default function Login({ onClose }) {
         </div>
 
         <div className="input-group">
+          <FiLock className="input-icon" /> 
+          <p>Digita tu contraseña:</p>  
           <input
             type="password"
             placeholder="Contraseña"
@@ -47,7 +54,7 @@ export default function Login({ onClose }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
+          {error && <p className="login-error">{error}</p>}
         <button className="login-btn" type="submit">
           Ingresar
         </button>
