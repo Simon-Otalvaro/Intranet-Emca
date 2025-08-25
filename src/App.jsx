@@ -27,7 +27,6 @@ export default function App() {
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/comunicaciones" element={<ComDashboard />} />
-      
       </Routes>
     </Router>
   );

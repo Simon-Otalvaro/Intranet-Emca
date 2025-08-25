@@ -1,20 +1,22 @@
 import "./Header.css";
 import useLocalTime from "../../hooks/useLocalTime";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import Login from "../Login/Login"; // Importamos el login
 
 export default function Header() {
   const { time, date } = useLocalTime();
+  const [showLogin, setShowLogin] = useState(false);
 
   return (
     <header className="header">
       <nav className="nav">
-        <Link to="/">
+        <a href="/">
           <img
             className="img-header"
             src="src/assets/images/logo-color.png"
             alt="Logo"
           />
-        </Link>
+        </a>
         <hr className="divider" />
         <h1 className="title-header">
           INTRANET - EMPRESAS PÚBLICAS DE CALARCÁ E.S.P
@@ -25,14 +27,28 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Botón que redirige al login */}
-      <Link className="login-button" to="/login">
+      <button className="login-button" onClick={() => setShowLogin(true)}>
         INGRESAR
-      </Link>
+      </button>
 
       <div>
         <hr className="divider" />
       </div>
+
+      {showLogin && (
+        <div className="login-modal">
+          <div
+            className="login-modal-overlay"
+            onClick={() => setShowLogin(false)}
+          />
+          <div className="login-modal-content">
+            <button className="login-close" onClick={() => setShowLogin(false)}>
+              ✕
+            </button>
+            <Login />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

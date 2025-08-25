@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { User, Lock } from "lucide-react"; // íconos
 import "./Login.css";
 
 export default function Login() {
@@ -18,11 +19,8 @@ export default function Login() {
 
     if (validUsers[username] && validUsers[username] === password) {
       setError("");
-      if (username === "admin") {
-        navigate("/admin");
-      } else if (username === "comunicaciones") {
-        navigate("/comunicaciones");
-      }
+      if (username === "admin") navigate("/admin");
+      if (username === "comunicaciones") navigate("/comunicaciones");
     } else {
       setError("Usuario o contraseña incorrectos");
     }
@@ -31,29 +29,33 @@ export default function Login() {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2 className="login-title">Intranet EMCA</h2>
+        <h2 className="login-title">Iniciar Sesión</h2>
 
         {error && <p className="login-error">{error}</p>}
 
-        <input
-          type="text"
-          placeholder="Usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+        <div className="input-group">
+          <User className="input-icon" size={18} />
+          <input
+            type="text"
+            placeholder="Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="input-group">
+          <Lock className="input-icon" size={18} />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-        <button type="submit" className="login-btn">
-          Ingresar
-        </button>
+        <button type="submit" className="login-btn">Ingresar</button>
       </form>
     </div>
   );
