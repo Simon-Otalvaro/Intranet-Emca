@@ -1,25 +1,43 @@
+import React, { useState, useEffect } from "react";
 import "./Header.css";
-import useLocalTime from "../../hooks/useLocalTime";
-import { useState } from "react";
 import Login from "../Login/Login";
 import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { time, date } = useLocalTime();
+  const [time, setTime] = useState("");
+  const [date, setDate] = useState("");
   const [showLogin, setShowLogin] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  // Función para actualizar reloj
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      const optionsTime = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
+      const optionsDate = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+      setTime(now.toLocaleTimeString("es-CO", optionsTime));
+      setDate(now.toLocaleDateString("es-CO", optionsDate));
+    };
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleLogout = () => {
-    logout();                 // Limpia el usuario en contexto y localStorage
-    setShowLogin(false);      // Cierra cualquier modal abierto
-    navigate("/");            // Redirige a la página principal
+    logout();
+    navigate("/nosotros");
+  };
+
+  const goToDashboard = () => {
+    navigate("/admin");
   };
 
   return (
     <header className="header">
-      <nav className="nav">
+      {/* Sección izquierda: Logo + título */}
+      <div className="header-left">
         <a href="/">
           <img
             className="img-header"
@@ -27,40 +45,54 @@ export default function Header() {
             alt="Logo"
           />
         </a>
-
         <hr className="divider" />
-
         <h1 className="title-header">
           INTRANET - EMPRESAS PÚBLICAS DE CALARCÁ E.S.P
         </h1>
+      </div>
 
+      {/* Sección central: Reloj */}
+      <div className="header-center">
         <div className="clock">
           <span className="time">{time}</span>
           <span className="date">{date}</span>
         </div>
+      </div>
 
-        {user ? (
-          <button className="login-button" onClick={handleLogout}>
-            CERRAR SESIÓN
-          </button>
-        ) : (
-          <button className="login-button" onClick={() => setShowLogin(true)}>
-            INGRESAR
-          </button>
-        )}
-      </nav>
+      {/* Sección derecha: Login o acciones */}
+      <div className="header-right">
+{user ? (
+  <div className="user-actions">
+    <img
+      src="src/assets/images/user-img.png"
+      alt="Usuario"
+      className="user-img"
+      onClick={goToDashboard}
+    />
+    <button className="logout-button" onClick={handleLogout}>
+      <img
+        src="src/assets/images/logout-img.jpg"
+        alt="Cerrar sesión"
+        className="logout-img"
+      />
+    </button>
+  </div>
+) : (
+  <button className="login-button" onClick={() => setShowLogin(true)}>
+    INGRESAR
+  </button>
+)}
 
-      {showLogin && !user && ( 
+      </div>
+      {/* Modal de login */}
+      {showLogin && !user && (
         <div className="login-modal">
           <div
             className="login-modal-overlay"
             onClick={() => setShowLogin(false)}
           ></div>
           <div className="login-modal-content">
-            <button
-              className="login-close"
-              onClick={() => setShowLogin(false)}
-            >
+            <button className="login-close" onClick={() => setShowLogin(false)}>
               ✕
             </button>
             <Login onClose={() => setShowLogin(false)} />

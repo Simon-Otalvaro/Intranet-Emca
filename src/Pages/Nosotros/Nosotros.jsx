@@ -11,7 +11,7 @@ export default function Nosotros() {
           garantizar servicios de calidad que contribuyan al bienestar de la comunidad 
           y al desarrollo sostenible de la región.
         </p>
-      </section>
+      </section>  
 
       {/* Misión y Visión */}
       <section className="nosotros-mv">
