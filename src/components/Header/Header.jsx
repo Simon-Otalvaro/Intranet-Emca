@@ -29,10 +29,13 @@ export default function Header() {
     logout();
     navigate("/");
   };
-
+  
   const goToDashboard = () => {
-    navigate("/admin");
-  };
+  if (!user) return;
+  if (user.role === "admin") navigate("/admin");
+  if (user.role === "comunicaciones") navigate("/comunicaciones");
+};
+
 
   return (
     <header className="header">

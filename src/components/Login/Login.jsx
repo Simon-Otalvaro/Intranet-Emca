@@ -12,18 +12,19 @@ export default function Login({ onClose }) {
   const { login } = useAuth();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const validUsers = { admin: "admin123", comunicaciones: "comu123" };
+  e.preventDefault();
+  const validUsers = { admin: "admin123", comunicaciones: "comu123" };
 
-    if (validUsers[username] && validUsers[username] === password) {
-      login(username);
-      if (username === "admin") navigate("/admin");
-      if (username === "comunicaciones") navigate("/comunicaciones");
-      if (onClose) onClose();
-    } else {
-      setError("Usuario o contraseña incorrectos");
-    }
-  };
+  if (validUsers[username] && validUsers[username] === password) {
+    login(username); // ya guarda {username, role}
+    if (username === "admin") navigate("/admin");
+    if (username === "comunicaciones") navigate("/comunicaciones");
+    if (onClose) onClose();
+  } else {
+    setError("Usuario o contraseña incorrectos");
+  }
+};
+
 
   return (
     <div className="login-container">

@@ -16,7 +16,6 @@ export default function Menu() {
         <span></span>
       </button>
 
-      
 
       <nav className={`menu ${open ? "active" : ""}`}>
         <h1 className="title">Menú IntraNet</h1>
@@ -31,10 +30,10 @@ export default function Menu() {
             <Link to="/nosotros" onClick={() => setOpen(false)}>Nosotros</Link>
           </li>
           <li>
-            <Link to="/eventos" onClick={() => setOpen(false)}>Eventos</Link>
+            <Link to="/noticias" onClick={() => setOpen(false)}>Noticias</Link>
           </li>
           <li>
-            <Link to="/noticias" onClick={() => setOpen(false)}>Noticias</Link>
+            <Link to="/eventos" onClick={() => setOpen(false)}>Eventos</Link>
           </li>
         </ul>
       </nav>

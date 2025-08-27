@@ -8,8 +8,10 @@ export function AuthProvider({ children }) {
   });
 
   const login = (username) => {
-    setUser(username);
-    localStorage.setItem("user", JSON.stringify(username));
+    const role = username === "admin" ? "admin" : "comunicaciones";
+    const userData = { username, role };
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {

@@ -26,12 +26,13 @@ export default function App() {
         <Route path="/utilidades" element={<Utilidades />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/noticias" element={<Noticias />} />
-        <Route path="/noticias" element={<Noticias />} />
         <Route path="/noticias/:id" element={<NoticiaDetalle />} />
+        
+        {/* Rutas protegidas con roles */}
         <Route
           path="/admin"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={["admin"]}>
               <AdminDashboard />
             </PrivateRoute>
           }
@@ -39,7 +40,7 @@ export default function App() {
         <Route
           path="/comunicaciones"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={["comunicaciones", "admin"]}>
               <ComDashboard />
             </PrivateRoute>
           }
