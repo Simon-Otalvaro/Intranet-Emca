@@ -5,6 +5,8 @@ import Home from "./Pages/Home/Home";
 import Nosotros from "./Pages/Nosotros/Nosotros";
 import Utilidades from "./Pages/Utilidades/Utilidades";
 import Eventos from "./Pages/Eventos/Eventos";
+import Noticias from "./Pages/Noticias/Noticias";
+import NoticiaDetalle from "./Pages/Noticias/NoticiaDetalle";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ComDashboard from "./Pages/Comunicaciones/ComDashboard";
 import PrivateRoute from "./components/Routes/PrivateRoutes";
@@ -23,6 +25,9 @@ export default function App() {
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/utilidades" element={<Utilidades />} />
         <Route path="/eventos" element={<Eventos />} />
+        <Route path="/noticias" element={<Noticias />} />
+        <Route path="/noticias" element={<Noticias />} />
+        <Route path="/noticias/:id" element={<NoticiaDetalle />} />
         <Route
           path="/admin"
           element={

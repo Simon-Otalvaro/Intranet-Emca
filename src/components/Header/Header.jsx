@@ -27,7 +27,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate("/nosotros");
+    navigate("/");
   };
 
   const goToDashboard = () => {

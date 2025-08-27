@@ -20,6 +20,12 @@ export default function AdminDashboard() {
           <p>Administra los eventos de la organización.</p>
           <button className="action-btn">Gestionar Eventos</button>
         </div>
+        
+        <div className="action-card">
+          <h2>Eventos</h2>
+          <p>Administra los eventos de la organización.</p>
+          <button className="action-btn">Gestionar Eventos</button>
+        </div>
       </section>
     </div>
   );

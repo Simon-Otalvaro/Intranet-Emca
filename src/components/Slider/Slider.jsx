@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import "./Slider.css";
 import img1 from "../../assets/images/banner1.png";
 import img2 from "../../assets/images/banner2.png";
+import img3 from "../../assets/images/banner3.png";
 
-const images = [img1, img2];
+const images = [img1, img2, img3];
 
 export default function Slider() {
   const [currentIndex, setCurrentIndex] = useState(0);
