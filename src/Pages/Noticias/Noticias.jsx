@@ -1,29 +1,41 @@
-import "./Noticias.css";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { newsData } from "../../Data/NewsData";
+import "./Noticias.css";
+
+const STORAGE_KEY = "intranet_noticias";
 
 export default function Noticias() {
+  const [noticias, setNoticias] = useState([]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      setNoticias(raw ? JSON.parse(raw) : []);
+    } catch {
+      setNoticias([]);
+    }
+  }, []);
+
   return (
-    <div className="news-container">
-      <h1>Sección de Noticias 📰</h1>
-        <p className="news-intro">
-         Aquí encontrarás las últimas noticias y actualizaciones relevantes para nuestra comunidad,
-         mantente informado sobre anuncios y novedades importantes.
-        </p>
-      <div className="news-grid">
-        {newsData.map((item) => (
-          <Link key={item.id} to={`/noticias/${item.id}`} className="news-card">
-            <img src={item.image} alt={item.title} className="news-img" />
-            <div className="news-content">
-              <h3>{item.title}</h3>
-              <p>{item.shortDesc}</p>
-              <span className="news-date">
-                {new Date(item.date).toLocaleDateString()}
-              </span>
+    <div className="noticias-container">
+      <h1>Noticias</h1>
+      {noticias.length === 0 ? (
+        <p>No hay noticias disponibles.</p>
+      ) : (
+        <div className="noticias-grid">
+          {noticias.map((n) => (
+            <div className="noticia-card" key={n.id}>
+              {n.imagen && <img src={n.imagen} alt={n.titulo} />}
+              <div className="noticia-content">
+                <h2>{n.titulo}</h2>
+                <p className="fecha">{n.fecha}</p>
+                <p>{n.shortDesc}</p>
+                <Link to={`/noticias/${n.id}`} className="ver-mas">Leer más →</Link>
+              </div>
             </div>
-          </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

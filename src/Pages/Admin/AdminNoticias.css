@@ -1,0 +1,184 @@
+/* Contenedor general */
+.admin-noticias {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Título */
+.admin-noticias h1 {
+  text-align: center;
+  color: #003366;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+/* Formulario */
+.noticia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.noticia-form input,
+.noticia-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.noticia-form input:focus,
+.noticia-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Preview de imagen */
+.noticia-form img {
+  max-width: 100%;
+  max-height: 250px;
+  border-radius: 10px;
+  margin-top: 10px;
+  object-fit: cover;
+  border: 2px solid #f0f0f0;
+  transition: transform 0.3s ease;
+}
+
+.noticia-form img:hover {
+  transform: scale(1.02);
+}
+
+/* Botones */
+.noticia-form button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s;
+}
+
+.noticia-form button:hover {
+  transform: translateY(-1px);
+}
+
+.noticia-form button[type="submit"] {
+  background: #007bff;
+  color: #fff;
+}
+
+.noticia-form button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.noticia-form button[type="button"] {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.noticia-form button[type="button"]:hover {
+  background: #c9c9c9;
+}
+
+/* Lista de noticias */
+.noticias-lista {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Tarjetas */
+.noticia-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.noticia-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.noticia-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+  padding: 14px 16px;
+}
+
+.card-body h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  color: #003366;
+}
+
+.card-body .fecha {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+/* Botones de acciones */
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.acciones button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s;
+}
+
+.acciones button:hover {
+  transform: translateY(-2px);
+}
+
+.acciones button:first-child {
+  background: #ffc107;
+  color: #fff;
+}
+
+.acciones button:first-child:hover {
+  background: #e0a800;
+}
+
+.acciones button:last-child {
+  background: #dc3545;
+  color: #fff;
+}
+
+.acciones button:last-child:hover {
+  background: #b02a37;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .noticias-lista {
+    grid-template-columns: 1fr;
+  }
+}
+  

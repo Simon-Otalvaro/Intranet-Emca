@@ -1,0 +1,44 @@
+.detalle-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.detalle-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.detalle-container h1 {
+  margin: 0.5rem 0;
+  color: #003366;
+}
+
+.fecha {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+.contenido {
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.volver-btn {
+  display: inline-block;
+  background: #0056a6;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.volver-btn:hover {
+  background: #003366;
+}

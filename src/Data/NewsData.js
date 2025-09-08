@@ -16,4 +16,6 @@ export const newsData = [
     image: "/src/assets/images/imagen-noticias-2.jpeg",
   },
   
+  
+  
 ];

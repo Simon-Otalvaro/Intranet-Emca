@@ -9,6 +9,8 @@ import Noticias from "./Pages/Noticias/Noticias";
 import NoticiaDetalle from "./Pages/Noticias/NoticiaDetalle";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ComDashboard from "./Pages/Comunicaciones/ComDashboard";
+import AdminNoticias from "./Pages/Admin/AdminNoticias";
+import AdminEventos from "./Pages/Admin/AdminEventos";
 import PrivateRoute from "./components/Routes/PrivateRoutes";
 import "./App.css";
 
@@ -21,19 +23,36 @@ export default function App() {
       </div>
       <Menu />
       <Routes>
+        {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/utilidades" element={<Utilidades />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/noticias" element={<Noticias />} />
         <Route path="/noticias/:id" element={<NoticiaDetalle />} />
-        
-        {/* Rutas protegidas con roles */}
+
+        {/* Rutas protegidas */}
         <Route
           path="/admin"
           element={
             <PrivateRoute allowedRoles={["admin"]}>
               <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/noticias"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <AdminNoticias />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/eventos"
+          element={
+            <PrivateRoute allowedRoles={["admin"]}>
+              <AdminEventos />
             </PrivateRoute>
           }
         />
