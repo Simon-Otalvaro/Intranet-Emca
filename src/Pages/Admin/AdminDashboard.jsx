@@ -31,6 +31,17 @@ export default function AdminDashboard() {
         </div>
 
         <div className="action-card">
+          <h2>Noticias</h2>
+          <p>Crea, edita y elimina empleados de la empresa.</p>
+          <button
+            className="action-btn"
+            onClick={() => navigate("/#/")}
+          >
+            Gestionar Empleados  
+          </button>
+        </div>
+
+        <div className="action-card">
           <h2>Eventos</h2>
           <p>Administra los eventos de la organización.</p>
           <button

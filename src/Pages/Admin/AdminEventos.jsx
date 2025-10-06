@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./AdminEventos.css";
 
-const STORAGE_KEY = "intranet_eventos";
-
-const loadInitial = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-};
+const API_URL = "http://localhost:3000/eventos";
 
 export default function AdminEventos() {
-  const [eventos, setEventos] = useState(loadInitial);
+  const [eventos, setEventos] = useState([]);
   const [form, setForm] = useState({
     id: null,
     titulo: "",
@@ -22,28 +14,69 @@ export default function AdminEventos() {
     lugar: "",
     link: "",
     imagen: "",
-    creado: "",
   });
+  const [imagenFile, setImagenFile] = useState(null);
 
-  // Persistir en localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(eventos));
-  }, [eventos]);
+    fetchEventos();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+  const fetchEventos = async () => {
+    try {
+      const res = await axios.get(API_URL);
+      setEventos(res.data);
+    } catch (err) {
+      console.error("Error al obtener eventos:", err);
+    }
   };
 
   const handleImage = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setForm((f) => ({ ...f, imagen: reader.result }));
-    reader.readAsDataURL(file);
+    setImagenFile(file);
+    const url = URL.createObjectURL(file);
+    setForm((f) => ({ ...f, imagen: url }));
   };
 
-  const resetForm = () =>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.titulo.trim() || !form.descripcion.trim() || !form.fechaHora) {
+      alert("Completa los campos obligatorios: título, descripción y fecha.");
+      return;
+    }
+
+    try {
+      const fd = new FormData();
+      fd.append("nombre", form.titulo);
+      fd.append("descripcion", form.descripcion);
+      fd.append("fechaHora", new Date(form.fechaHora).toISOString());
+      if (form.lugar) fd.append("lugar", form.lugar);
+      if (form.link) fd.append("link", form.link);
+      if (imagenFile) fd.append("imagen", imagenFile);
+
+      if (form.id) {
+        // Actualizar evento existente
+        await axios.put(`${API_URL}/${form.id}`, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        // Crear nuevo evento
+        await axios.post(API_URL, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
+      alert("Evento guardado correctamente.");
+      fetchEventos();
+      resetForm();
+    } catch (err) {
+      console.error("Error guardando evento:", err);
+      alert("Ocurrió un error al guardar el evento. Revisa la consola.");
+    }
+  };
+
+  const resetForm = () => {
     setForm({
       id: null,
       titulo: "",
@@ -52,141 +85,111 @@ export default function AdminEventos() {
       lugar: "",
       link: "",
       imagen: "",
-      creado: "",
     });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.titulo.trim() || !form.descripcion.trim() || !form.fechaHora) {
-      alert("Completa los campos obligatorios (Título, descripción y fecha).");
-      return;
-    }
-
-    if (form.id) {
-      // actualizar
-      setEventos((prev) => prev.map((ev) => (ev.id === form.id ? { ...form } : ev)));
-    } else {
-      // crear
-      const nuevo = {
-        ...form,
-        id: Date.now().toString(),
-        creado: new Date().toLocaleString("es-CO", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
-      setEventos((prev) =>
-        [...prev, nuevo].sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora))
-      );
-    }
-
-    resetForm();
+    setImagenFile(null);
   };
 
-  const handleEdit = (id) => {
-    const item = eventos.find((ev) => ev.id === id);
-    if (!item) return;
-    setForm({ ...item });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleEdit = (ev) => {
+    setForm({
+      id: ev.id,
+      titulo: ev.nombre,
+      descripcion: ev.descripcion,
+      fechaHora: new Date(ev.fechaHora).toISOString().slice(0, 16),
+      lugar: ev.lugar || "",
+      link: ev.link || "",
+      imagen: ev.imagen
+        ? `http://localhost:3000/uploads/events/${ev.imagen}`
+        : "",
+    });
   };
 
-  const handleDelete = (id) => {
-    if (!confirm("¿Eliminar este evento?")) return;
-    setEventos((prev) => prev.filter((ev) => ev.id !== id));
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Seguro que deseas eliminar este evento?")) return;
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      fetchEventos();
+    } catch (err) {
+      console.error("Error eliminando evento:", err);
+    }
   };
 
   return (
     <div className="admin-eventos">
-      <h1>Gestión de Eventos</h1>
-      <form className="evento-form" onSubmit={handleSubmit}>
+      <h2>Crear Evento</h2>
+
+      <form onSubmit={handleSubmit} className="evento-form">
         <input
-          name="titulo"
+          type="text"
+          placeholder="Título"
           value={form.titulo}
-          onChange={handleChange}
-          placeholder="Título del evento"
+          onChange={(e) => setForm({ ...form, titulo: e.target.value })}
           required
         />
         <textarea
-          name="descripcion"
+          placeholder="Descripción"
           value={form.descripcion}
-          onChange={handleChange}
-          placeholder="Descripción del evento"
-          rows={4}
+          onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
           required
         />
         <input
           type="datetime-local"
-          name="fechaHora"
           value={form.fechaHora}
-          onChange={handleChange}
+          onChange={(e) => setForm({ ...form, fechaHora: e.target.value })}
           required
         />
         <input
-          name="lugar"
+          type="text"
+          placeholder="Lugar"
           value={form.lugar}
-          onChange={handleChange}
-          placeholder="Lugar del evento"
+          onChange={(e) => setForm({ ...form, lugar: e.target.value })}
         />
         <input
           type="url"
-          name="link"
+          placeholder="Link (opcional)"
           value={form.link}
-          onChange={handleChange}
-          placeholder="Link de inscripción (ej: Google Form)"
+          onChange={(e) => setForm({ ...form, link: e.target.value })}
         />
         <input type="file" accept="image/*" onChange={handleImage} />
+
         {form.imagen && (
           <img
             src={form.imagen}
-            alt="preview"
-            style={{ maxWidth: 200, borderRadius: 8, marginTop: 8 }}
+            alt="Previsualización"
+            style={{ width: 150, borderRadius: 8, marginTop: 8 }}
           />
         )}
 
-        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <button type="submit">{form.id ? "Actualizar" : "Crear"}</button>
-          <button type="button" onClick={resetForm}>
-            Limpiar
-          </button>
-        </div>
+        <button type="submit">{form.id ? "Actualizar" : "Crear"} Evento</button>
+        {form.id && <button onClick={resetForm}>Cancelar edición</button>}
       </form>
 
-      <section className="eventos-lista">
-        {eventos.length === 0 ? (
-          <p>No hay eventos aún.</p>
-        ) : (
-          eventos.map((ev) => (
-            <article className="evento-card" key={ev.id}>
-              {ev.imagen && <img src={ev.imagen} alt={ev.titulo} />}
-              <div className="card-body">
-                <h3>{ev.titulo}</h3>
-                <p className="fecha">
-                  📅 {new Date(ev.fechaHora).toLocaleString("es-CO", {
-                    dateStyle: "full",
-                    timeStyle: "short",
-                  })}
-                </p>
-                <p>{ev.descripcion}</p>
-                {ev.lugar && <p>📍 <strong>{ev.lugar}</strong></p>}
-                {ev.link && (
-                  <p>
-                    🔗 <a href={ev.link} target="_blank" rel="noreferrer">
-                      Inscribirse aquí
-                    </a>
-                  </p>
-                )}
-                <div className="acciones">
-                  <button onClick={() => handleEdit(ev.id)}>✏️ Editar</button>
-                  <button onClick={() => handleDelete(ev.id)}>🗑️ Eliminar</button>
-                </div>
-              </div>
-            </article>
-          ))
-        )}
-      </section>
+      <h3>Eventos actuales</h3>
+      <div className="eventos-lista">
+        {eventos.map((ev) => (
+          <div key={ev.id} className="evento-card">
+            <h4>{ev.nombre}</h4>
+            <p>{ev.descripcion}</p>
+            <p>
+              <b>Fecha:</b>{" "}
+              {new Date(ev.fechaHora).toLocaleString("es-CO", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </p>
+            {ev.imagen && (
+              <img
+                src={`http://localhost:3000/uploads/events/${ev.imagen}`}
+                alt={ev.nombre}
+                style={{ width: 200, borderRadius: 8 }}
+              />
+            )}
+            <div className="acciones">
+              <button onClick={() => handleEdit(ev)}>Editar</button>
+              <button onClick={() => handleDelete(ev.id)}>Eliminar</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
