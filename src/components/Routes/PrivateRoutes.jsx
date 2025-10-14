@@ -4,15 +4,16 @@ import { useAuth } from "../../Context/AuthContext";
 export default function PrivateRoute({ children, allowedRoles }) {
   const { user } = useAuth();
 
+  // Usuario no logueado → redirige al inicio
   if (!user) {
-    // No hay sesión iniciada
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
-  // Si se especifican roles y el del usuario no está incluido
+  // Usuario logueado pero sin rol permitido → redirige al inicio
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 
+  // Usuario permitido → renderiza el componente
   return children;
 }

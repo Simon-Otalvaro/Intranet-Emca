@@ -18,7 +18,7 @@ export default function Noticias() {
 
   return (
     <div className="noticias-container">
-      <h1>Noticias</h1>
+      <h1>📰 Noticias</h1>
       {noticias.length === 0 ? (
         <p>No hay noticias disponibles.</p>
       ) : (

@@ -1,41 +1,63 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  FaHome,
+  FaTools,
+  FaUsers,
+  FaNewspaper,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import "./Menu.css";
 
 export default function Menu() {
   const [open, setOpen] = useState(false);
 
+  const links = [
+    { name: "Inicio", path: "/", icon: <FaHome /> },
+    { name: "Utilidades", path: "/utilidades", icon: <FaTools /> },
+    { name: "Nosotros", path: "/nosotros", icon: <FaUsers /> },
+    { name: "Noticias", path: "/noticias", icon: <FaNewspaper /> },
+    { name: "Eventos", path: "/eventos", icon: <FaCalendarAlt /> },
+  ];
+
   return (
     <>
-      <button 
-        className={`menu-btn ${open ? "open" : ""}`} 
+      {/* Botón hamburguesa */}
+      <button
+        className={`menu-btn ${open ? "open" : ""}`}
         onClick={() => setOpen(!open)}
+        aria-label="Abrir menú"
       >
         <span></span>
         <span></span>
         <span></span>
       </button>
 
+      {/* Overlay */}
+      {open && <div className="overlay" onClick={() => setOpen(false)}></div>}
 
-      <nav className={`menu ${open ? "active" : ""}`}>
-        <h1 className="title">Menú IntraNet</h1>
+      {/* Drawer */}
+      <nav className={`menu-drawer ${open ? "active" : ""}`}>
+        {/* Encabezado con logo y título */}
+        <div className="menu-header">
+          <img src="src/assets/images/logo-color.png" alt="Logo Empresa" />
+          <h1>IntraNet EMCA</h1>
+        </div>
+
         <ul>
-          <li>
-            <Link to="/" onClick={() => setOpen(false)}>Inicio</Link>
-          </li>
-          <li>
-            <Link to="/utilidades" onClick={() => setOpen(false)}>Utilidades</Link>
-          </li>
-          <li>
-            <Link to="/nosotros" onClick={() => setOpen(false)}>Nosotros</Link>
-          </li>
-          <li>
-            <Link to="/noticias" onClick={() => setOpen(false)}>Noticias</Link>
-          </li>
-          <li>
-            <Link to="/eventos" onClick={() => setOpen(false)}>Eventos</Link>
-          </li>
+          {links.map((link) => (
+            <li key={link.name}>
+              <Link to={link.path} onClick={() => setOpen(false)}>
+                <span className="icon">{link.icon}</span>
+                {link.name}
+              </Link>
+            </li>
+          ))}
         </ul>
+
+        <footer className="menu-footer">
+          <p>© 2025 EMCA</p>
+        </footer>
       </nav>
     </>
   );

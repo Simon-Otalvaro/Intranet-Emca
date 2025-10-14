@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Eventos.css";
-import CalendarioEventos from "../../components/Calendario/CalendarioEventos";
 
 export default function Eventos() {
   const [eventos, setEventos] = useState([]);
@@ -77,9 +76,6 @@ export default function Eventos() {
           ))}
         </div>
       )}
-
-      {/* 📅 Calendario de eventos */}
-      <CalendarioEventos />
     </div>
   );
 }

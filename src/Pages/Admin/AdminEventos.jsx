@@ -115,80 +115,110 @@ export default function AdminEventos() {
 
   return (
     <div className="admin-eventos">
-      <h2>Crear Evento</h2>
+      {/* === Sección de Creación === */}
+      <div className="seccion-formulario">
+        <h2>Formulario para crear un nuevo evento:</h2>
 
-      <form onSubmit={handleSubmit} className="evento-form">
-        <input
-          type="text"
-          placeholder="Título"
-          value={form.titulo}
-          onChange={(e) => setForm({ ...form, titulo: e.target.value })}
-          required
-        />
-        <textarea
-          placeholder="Descripción"
-          value={form.descripcion}
-          onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-          required
-        />
-        <input
-          type="datetime-local"
-          value={form.fechaHora}
-          onChange={(e) => setForm({ ...form, fechaHora: e.target.value })}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Lugar"
-          value={form.lugar}
-          onChange={(e) => setForm({ ...form, lugar: e.target.value })}
-        />
-        <input
-          type="url"
-          placeholder="Link (opcional)"
-          value={form.link}
-          onChange={(e) => setForm({ ...form, link: e.target.value })}
-        />
-        <input type="file" accept="image/*" onChange={handleImage} />
-
-        {form.imagen && (
-          <img
-            src={form.imagen}
-            alt="Previsualización"
-            style={{ width: 150, borderRadius: 8, marginTop: 8 }}
+        <form onSubmit={handleSubmit} className="evento-form">
+          <input
+            type="text"
+            placeholder="Título"
+            value={form.titulo}
+            onChange={(e) => setForm({ ...form, titulo: e.target.value })}
+            required
           />
-        )}
+          <textarea
+            placeholder="Descripción"
+            value={form.descripcion}
+            onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
+            required
+          />
+          <input
+            type="datetime-local"
+            value={form.fechaHora}
+            onChange={(e) => setForm({ ...form, fechaHora: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Lugar"
+            value={form.lugar}
+            onChange={(e) => setForm({ ...form, lugar: e.target.value })}
+          />
+          <input
+            type="url"
+            placeholder="Link (opcional)"
+            value={form.link}
+            onChange={(e) => setForm({ ...form, link: e.target.value })}
+          />
+          <input type="file" accept="image/*" onChange={handleImage} />
 
-        <button type="submit">{form.id ? "Actualizar" : "Crear"} Evento</button>
-        {form.id && <button onClick={resetForm}>Cancelar edición</button>}
-      </form>
+          {form.imagen && (
+            <img
+              src={form.imagen}
+              alt="Previsualización"
+              style={{ width: 150, borderRadius: 8, marginTop: 8 }}
+            />
+          )}
 
-      <h3>Eventos actuales</h3>
-      <div className="eventos-lista">
-        {eventos.map((ev) => (
-          <div key={ev.id} className="evento-card">
-            <h4>{ev.nombre}</h4>
-            <p>{ev.descripcion}</p>
-            <p>
-              <b>Fecha:</b>{" "}
-              {new Date(ev.fechaHora).toLocaleString("es-CO", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
-            </p>
-            {ev.imagen && (
-              <img
-                src={`http://localhost:3000/uploads/events/${ev.imagen}`}
-                alt={ev.nombre}
-                style={{ width: 200, borderRadius: 8 }}
-              />
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <button type="submit">
+              {form.id ? "Actualizar" : "Crear"} Evento
+            </button>
+            {form.id && (
+              <button type="button" onClick={resetForm}>
+                Cancelar edición
+              </button>
             )}
-            <div className="acciones">
-              <button onClick={() => handleEdit(ev)}>Editar</button>
-              <button onClick={() => handleDelete(ev.id)}>Eliminar</button>
-            </div>
           </div>
-        ))}
+        </form>
+      </div>
+
+      {/* === Sección de Eventos Actuales === */}
+      <div className="seccion-eventos">
+        <h2>Eventos registrados:</h2>
+        <div className="eventos-lista">
+          {eventos.length === 0 ? (
+            <p>No hay eventos registrados aún.</p>
+          ) : (
+            eventos.map((ev) => (
+              <div key={ev.id} className="evento-card">
+                {ev.imagen && (
+                  <img
+                    src={`http://localhost:3000/uploads/events/${ev.imagen}`}
+                    alt={ev.nombre}
+                  />
+                )}
+                <div className="evento-card-content">
+                  <h4>{ev.nombre}</h4>
+                  <div className="fecha">
+                    {new Date(ev.fechaHora).toLocaleString("es-CO", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </div>
+                  <p>{ev.descripcion}</p>
+                  {ev.lugar && (
+                    <p>
+                      <b>Lugar:</b> {ev.lugar}
+                    </p>
+                  )}
+                  {ev.link && (
+                    <p>
+                      <a href={ev.link} target="_blank" rel="noreferrer">
+                        Enlace al evento
+                      </a>
+                    </p>
+                  )}
+                  <div className="acciones">
+                    <button onClick={() => handleEdit(ev)}>Editar</button>
+                    <button onClick={() => handleDelete(ev.id)}>Eliminar</button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

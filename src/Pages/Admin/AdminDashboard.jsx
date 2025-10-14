@@ -14,11 +14,12 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <header className="admin-header">
-        <h1>Administrador</h1>
-        <p>Bienvenido, aquí gestionas toda la intranet.</p>
+        <h1>Panel de Administración</h1>
+        <p>Bienvenido, aquí puedes gestionar toda la intranet.</p>
       </header>
 
       <section className="admin-actions">
+        {/* Noticias */}
         <div className="action-card">
           <h2>Noticias</h2>
           <p>Crea, edita y elimina las noticias de la empresa.</p>
@@ -26,21 +27,23 @@ export default function AdminDashboard() {
             className="action-btn"
             onClick={() => navigate("/admin/noticias")}
           >
-            Gestionar Noticias  
+            Gestionar Noticias
           </button>
         </div>
 
+        {/* Empleados */}
         <div className="action-card">
-          <h2>Noticias</h2>
-          <p>Crea, edita y elimina empleados de la empresa.</p>
+          <h2>Empleados</h2>
+          <p>Crea, edita información y elimina empleados de la empresa.</p>
           <button
             className="action-btn"
-            onClick={() => navigate("/#/")}
+            onClick={() => navigate("/admin/empleados")}
           >
-            Gestionar Empleados  
+            Gestionar Empleados
           </button>
         </div>
 
+        {/* Eventos */}
         <div className="action-card">
           <h2>Eventos</h2>
           <p>Administra los eventos de la organización.</p>

@@ -1,52 +1,47 @@
 import { motion } from "framer-motion";
-import { ShieldCheck, Lightbulb, HeartHandshake } from "lucide-react";
+import { ShieldCheck, Lightbulb, HeartHandshake, Users } from "lucide-react";
 import "./Nosotros.css";
 
 export default function Nosotros() {
+  const valores = ["Honestidad", "Compromiso", "Respeto", "Diligencia", "Justicia", "Confianza"];
+
   return (
     <div className="nosotros">
-      {/* Hero Section */}
+
+      {/* Hero */}
       <section className="nosotros-hero">
-        <div className="overlay">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Sobre Nosotros
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
+        <motion.div
+          className="hero-content"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1>Sobre Nosotros</h1>
+          <p>
             En <strong>EMCA E.S.P</strong> trabajamos con responsabilidad y compromiso
             para garantizar servicios de calidad que contribuyan al bienestar de la comunidad.
-          </motion.p>
-        </div>
+          </p>
+        </motion.div>
       </section>
 
       {/* Misión y Visión */}
       <section className="nosotros-mv">
-        <motion.div 
-          className="card"
-          whileHover={{ scale: 1.05 }}
-        >
-          <ShieldCheck size={40} color="#B4CC3D" />
+        <motion.div className="card" whileHover={{ scale: 1.05 }}>
+          <ShieldCheck size={48} color="#3b82f6" />
           <h2>Misión</h2>
           <p>
-           EMPRESAS PÚBLICAS DE CALARCÁ E.S.P. es una empresa industrial y comercial del estado, de orden municipal, con autonomía administrativa y financiera, prestadora de los servicios públicos domiciliarios de acueducto, alcantarillado y aseo en el municipio de Calarcá.
+            EMPRESAS PÚBLICAS DE CALARCÁ E.S.P. es una empresa industrial y comercial del estado,
+            de orden municipal, con autonomía administrativa y financiera, prestadora de los servicios públicos domiciliarios de acueducto, alcantarillado y aseo en el municipio de Calarcá.
           </p>
         </motion.div>
 
-        <motion.div 
-          className="card"
-          whileHover={{ scale: 1.05 }}
-        >
-          <Lightbulb size={40} color="#B4CC3D" />
+        <motion.div className="card" whileHover={{ scale: 1.05 }}>
+          <Lightbulb size={48} color="#3b82f6" />
           <h2>Visión</h2>
           <p>
-          En el año 2025 seremos una empresa lider a nivel regional con innovación, eficacia y eficiencia, logrando estandares de cantidad, calidad y continuidad en la prestación de nuestros servicios, generando confianza en la comunidad y partes interesadas a través del cumplimiento de los valores organizacionales.
+            Aspiramos siempre ser una empresa líder a nivel regional con innovación, eficacia y eficiencia,
+            logrando estándares de cantidad, calidad y continuidad en la prestación de nuestros servicios,
+            generando confianza en la comunidad y partes interesadas.
           </p>
         </motion.div>
       </section>
@@ -55,13 +50,13 @@ export default function Nosotros() {
       <section className="nosotros-valores">
         <h2>Nuestros Valores</h2>
         <div className="valores-grid">
-          {["Honestidad", "Compromiso", "Respeto", "Diligencia", "Justicia", "Confianza"].map((valor, i) => (
-            <motion.div 
-              key={i} 
+          {valores.map((valor, i) => (
+            <motion.div
+              key={i}
               className="valor-item"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
             >
-              <HeartHandshake size={24} color="#B4CC3D" />
+              <HeartHandshake size={28} color="#3b82f6" />
               <span>{valor}</span>
             </motion.div>
           ))}

@@ -1,115 +1,107 @@
-/* Contenedor general */
+/* === CONTENEDOR PRINCIPAL === */
 .admin-noticias {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 2rem;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  font-family: "Segoe UI", Tahoma, sans-serif;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", system-ui, sans-serif;
+  color: #333;
 }
 
-/* Título */
+/* === TITULO PRINCIPAL === */
 .admin-noticias h1 {
-  text-align: center;
-  color: #003366;
-  margin-bottom: 20px;
   font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  border-left: 6px solid #3498db;
+  padding-left: 0.6rem;
 }
 
-/* Formulario */
+/* === FORMULARIO === */
 .noticia-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .noticia-form input,
 .noticia-form textarea {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  width: 100%;
+  padding: 0.8rem;
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border: 1px solid #ccd1d9;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
 }
 
 .noticia-form input:focus,
 .noticia-form textarea:focus {
-  border-color: #007bff;
+  border-color: #3498db;
+  background-color: #fff;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 4px rgba(52, 152, 219, 0.4);
 }
 
-/* Preview de imagen */
-.noticia-form img {
-  max-width: 100%;
-  max-height: 250px;
-  border-radius: 10px;
-  margin-top: 10px;
-  object-fit: cover;
-  border: 2px solid #f0f0f0;
-  transition: transform 0.3s ease;
-}
-
-.noticia-form img:hover {
-  transform: scale(1.02);
-}
-
-/* Botones */
 .noticia-form button {
-  padding: 10px 16px;
+  background: #3498db;
+  color: white;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
   font-weight: 600;
-  transition: background 0.2s ease, transform 0.2s;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  align-self: flex-start;
 }
 
 .noticia-form button:hover {
+  background: #2980b9;
   transform: translateY(-1px);
 }
 
-.noticia-form button[type="submit"] {
-  background: #007bff;
-  color: #fff;
+.noticia-form button:last-child {
+  background: #2c5cfa;
 }
 
-.noticia-form button[type="submit"]:hover {
-  background: #0056b3;
+.noticia-form button:last-child:hover {
+  background: #7f8c8d;
 }
 
-.noticia-form button[type="button"] {
-  background: #e0e0e0;
-  color: #333;
+/* === PREVISUALIZACIÓN DE IMAGEN === */
+.noticia-form img {
+  display: block;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  max-height: 160px;
+  margin-top: 0.5rem;
+  object-fit: cover;
 }
 
-.noticia-form button[type="button"]:hover {
-  background: #c9c9c9;
-}
-
-/* Lista de noticias */
+/* === LISTA DE NOTICIAS === */
 .noticias-lista {
-  margin-top: 30px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 2rem;
 }
 
-/* Tarjetas */
+/* === TARJETAS DE NOTICIAS === */
 .noticia-card {
-  background: #f9fafb;
+  background: #ffffff;
+  border: 1px solid #e1e5eb;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .noticia-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.15);
 }
 
 .noticia-card img {
@@ -118,67 +110,78 @@
   object-fit: cover;
 }
 
-/* Cuerpo de la tarjeta */
 .card-body {
-  padding: 14px 16px;
+  padding: 1rem 1.2rem;
 }
 
-.card-body h3 {
-  margin: 0 0 6px;
+/* === INFO DE NOTICIA === */
+.noticia-card h3 {
   font-size: 1.2rem;
-  color: #003366;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.4rem;
 }
 
-.card-body .fecha {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 8px;
+.noticia-card .fecha {
+  color: #3498db;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* Botones de acciones */
+.noticia-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.6rem;
+}
+
+/* === BOTONES DE ACCIÓN === */
 .acciones {
   display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
 }
 
 .acciones button {
-  padding: 6px 10px;
+  flex: 1;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  transition: background 0.2s ease, transform 0.2s;
-}
-
-.acciones button:hover {
-  transform: translateY(-2px);
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .acciones button:first-child {
-  background: #ffc107;
+  background: #f1c40f;
   color: #fff;
 }
 
 .acciones button:first-child:hover {
-  background: #e0a800;
+  background: #d4ac0d;
 }
 
 .acciones button:last-child {
-  background: #dc3545;
+  background: #e74c3c;
   color: #fff;
 }
 
 .acciones button:last-child:hover {
-  background: #b02a37;
+  background: #c0392b;
 }
 
-/* Responsivo */
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
-  .noticias-lista {
-    grid-template-columns: 1fr;
+  .admin-noticias {
+    padding: 1.5rem;
+  }
+
+  .noticia-card img {
+    height: 160px;
+  }
+
+  .noticia-card h3 {
+    font-size: 1rem;
   }
 }
-  

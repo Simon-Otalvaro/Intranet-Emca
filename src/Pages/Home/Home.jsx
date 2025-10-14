@@ -1,14 +1,35 @@
 import "./Home.css";
-import Slider from "../../components/Slider/Slider";
+import CalendarioEventos from "../../components/Calendario/CalendarioEventos";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [eventos, setEventos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/eventos")
+      .then(res => res.json())
+      .then(data => setEventos(data))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
-    <div className="hero">
-      <h1 className="hero-title">BIENVENIDO A INTRANET DE EMCA E.S.P</h1>
-      <p className="hero-subtitle">
-        Aquí encontrarás utilidades, información sobre nosotros, eventos y las noticias más importantes de la empresa.
-      </p>
-      <Slider />
+    <div className="home">
+      <section className="hero-compact">
+        <div className="hero-content">
+          <h1>Bienvenido a Intranet EMCA E.S.P</h1>
+          <p>En este portal podrás acceder a información relevante sobre noticias, eventos, herramientas e información corporativa.</p>
+
+          {/* Línea horizontal con texto */}
+          <div className="horizontal-line">
+            <span>Calendario EMCA</span>
+          </div>
+
+          {/* Calendar Section */}
+          <div className="calendar-card">
+            <CalendarioEventos eventos={eventos} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
