@@ -1,8 +1,7 @@
-/* ===== BOTÓN HAMBURGUESA ===== */
 .menu-btn {
   position: fixed;
-  top: 100px; /* debajo del header */
-  left: 0; /* pegado al borde izquierdo */
+  top: 100px; 
+  left: 0; 
   width: 55px;
   height: 55px;
   background-color: #3080c3;
@@ -14,7 +13,7 @@
   justify-content: center;
   align-items: center;
   gap: 6px;
-  z-index: 1200; /* por encima del header */
+  z-index: 1200; 
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
@@ -32,7 +31,6 @@
   transition: all 0.3s ease;
 }
 
-/* Animación del icono al abrir */
 .menu-btn.open span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -43,7 +41,6 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ===== OVERLAY ===== */
 .overlay {
   position: fixed;
   top: 100px; /* debajo del header */
@@ -55,7 +52,6 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* ===== MENU DRAWER (DESDE LA DERECHA) ===== */
 .menu-drawer {
   position: fixed;
   top: 100px; /* debajo del header */
@@ -75,7 +71,6 @@
   right: 0;
 }
 
-/* ===== ENCABEZADO DEL MENÚ ===== */
 .menu-header {
   display: flex;
   flex-direction: column;
@@ -96,7 +91,6 @@
   text-align: center;
 }
 
-/* ===== ENLACES ===== */
 .menu-drawer ul {
   list-style: none;
   padding: 1rem;
@@ -128,7 +122,6 @@
   font-size: 1.2rem;
 }
 
-/* ===== FOOTER DEL MENÚ ===== */
 .menu-footer {
   padding: 1rem;
   border-top: 1px solid #ddd;
@@ -137,7 +130,6 @@
   color: #555;
 }
 
-/* ===== ANIMACIONES ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -147,7 +139,6 @@
   }
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .menu-btn {
     width: 45px;

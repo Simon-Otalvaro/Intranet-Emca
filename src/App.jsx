@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Menu from "./components/Menu/Menu";
@@ -13,7 +13,9 @@ import ComDashboard from "./Pages/Comunicaciones/ComDashboard";
 import AdminNoticias from "./Pages/Admin/AdminNoticias";
 import AdminEventos from "./Pages/Admin/AdminEventos";
 import PrivateRoute from "./components/Routes/PrivateRoutes";
-import EmpleadosList from "./pages/admin/empleados/EmpleadosList";
+import EmpleadosList from "./Pages/Admin/empleados/EmpleadosList";
+import Footer from "./components/Footer/Footer";
+
 import "./App.css";
 
 export default function App() {
@@ -26,8 +28,6 @@ export default function App() {
         <hr className="hr-line" />
       </div>
       <Menu />
-
-      {/* Rutas */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/nosotros" element={<Nosotros />} />
@@ -37,7 +37,6 @@ export default function App() {
         <Route path="/noticias/:id" element={<NoticiaDetalle />} />
         <Route path="/admin/empleados" element={<EmpleadosList />} />
 
-        {/* Panel de administración */}
         <Route
           path="/admin"
           element={
@@ -63,7 +62,6 @@ export default function App() {
           }
         />
 
-        {/* Panel comunicaciones */}
         <Route
           path="/comunicaciones"
           element={
@@ -73,6 +71,7 @@ export default function App() {
           }
         />
       </Routes>
+      <Footer /> 
     </>
   );
 }

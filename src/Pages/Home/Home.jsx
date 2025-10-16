@@ -1,6 +1,8 @@
 import "./Home.css";
 import CalendarioEventos from "../../components/Calendario/CalendarioEventos";
 import { useState, useEffect } from "react";
+import Slider from "../../components/Slider/Slider";
+
 
 export default function Home() {
   const [eventos, setEventos] = useState([]);
@@ -19,16 +21,15 @@ export default function Home() {
           <h1>Bienvenido a Intranet EMCA E.S.P</h1>
           <p>En este portal podrás acceder a información relevante sobre noticias, eventos, herramientas e información corporativa.</p>
 
-          {/* Línea horizontal con texto */}
           <div className="horizontal-line">
             <span>Calendario EMCA</span>
           </div>
 
-          {/* Calendar Section */}
           <div className="calendar-card">
             <CalendarioEventos eventos={eventos} />
           </div>
         </div>
+        <Slider />
       </section>
     </div>
   );

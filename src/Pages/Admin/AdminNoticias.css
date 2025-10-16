@@ -10,14 +10,22 @@
   color: #333;
 }
 
-/* === TITULO PRINCIPAL === */
-.admin-noticias h1 {
+/* === TITULOS PRINCIPALES === */
+.admin-noticias h2 {
   font-size: 1.8rem;
   color: #2c3e50;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 700;
+  text-align: left;
   border-left: 6px solid #3498db;
   padding-left: 0.6rem;
+}
+
+/* === SECCIONES === */
+.seccion-formulario {
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 2rem;
 }
 
 /* === FORMULARIO === */
@@ -25,7 +33,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .noticia-form input,
@@ -64,24 +71,6 @@
   transform: translateY(-1px);
 }
 
-.noticia-form button:last-child {
-  background: #2c5cfa;
-}
-
-.noticia-form button:last-child:hover {
-  background: #7f8c8d;
-}
-
-/* === PREVISUALIZACIÓN DE IMAGEN === */
-.noticia-form img {
-  display: block;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  max-height: 160px;
-  margin-top: 0.5rem;
-  object-fit: cover;
-}
-
 /* === LISTA DE NOTICIAS === */
 .noticias-lista {
   display: grid;
@@ -89,7 +78,7 @@
   gap: 2rem;
 }
 
-/* === TARJETAS DE NOTICIAS === */
+/* === TARJETAS === */
 .noticia-card {
   background: #ffffff;
   border: 1px solid #e1e5eb;
@@ -110,12 +99,11 @@
   object-fit: cover;
 }
 
-.card-body {
+.noticia-card-content {
   padding: 1rem 1.2rem;
 }
 
-/* === INFO DE NOTICIA === */
-.noticia-card h3 {
+.noticia-card h4 {
   font-size: 1.2rem;
   font-weight: 700;
   color: #2c3e50;
@@ -135,22 +123,10 @@
   margin-bottom: 0.6rem;
 }
 
-/* === BOTONES DE ACCIÓN === */
 .acciones {
   display: flex;
   gap: 0.6rem;
   margin-top: 0.8rem;
-}
-
-.acciones button {
-  flex: 1;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 0.7rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
 }
 
 .acciones button:first-child {
@@ -158,30 +134,11 @@
   color: #fff;
 }
 
-.acciones button:first-child:hover {
-  background: #d4ac0d;
-}
-
 .acciones button:last-child {
   background: #e74c3c;
   color: #fff;
 }
 
-.acciones button:last-child:hover {
-  background: #c0392b;
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .admin-noticias {
-    padding: 1.5rem;
-  }
-
-  .noticia-card img {
-    height: 160px;
-  }
-
-  .noticia-card h3 {
-    font-size: 1rem;
-  }
+.acciones button:hover {
+  opacity: 0.9;
 }

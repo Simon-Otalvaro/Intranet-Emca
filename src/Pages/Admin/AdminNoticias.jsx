@@ -1,157 +1,239 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2"; 
 import "./AdminNoticias.css";
 
-const STORAGE_KEY = "intranet_noticias";
-
-const loadInitial = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-};
+const API_URL = "http://localhost:3000/news";
 
 export default function AdminNoticias() {
-  const [noticias, setNoticias] = useState(loadInitial);
+  const [noticias, setNoticias] = useState([]);
   const [form, setForm] = useState({
     id: null,
     titulo: "",
     shortDesc: "",
     contenido: "",
+    fechaPublicacion: "",
     imagen: "",
-    fecha: "",
   });
+  const [imagenFile, setImagenFile] = useState(null);
 
-  // Persistir cambios
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(noticias));
-  }, [noticias]);
+    fetchNoticias();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+  const fetchNoticias = async () => {
+    try {
+      const res = await axios.get(API_URL);
+      setNoticias(res.data);
+    } catch (err) {
+      console.error("Error al obtener noticias:", err);
+    }
   };
 
-  // subir imagen -> base64
   const handleImage = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setForm((f) => ({ ...f, imagen: reader.result }));
-    reader.readAsDataURL(file);
+    setImagenFile(file);
+    setForm((f) => ({ ...f, imagen: URL.createObjectURL(file) }));
   };
 
-  const resetForm = () =>
-    setForm({ id: null, titulo: "", shortDesc: "", contenido: "", imagen: "", fecha: "" });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!form.titulo.trim() || !form.contenido.trim()) {
-      alert("Completa título y contenido.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Faltan Campos',
+        text: 'El título y el contenido de la noticia son obligatorios.',
+      });
       return;
     }
 
-    if (form.id) {
-      // actualizar por id
-      setNoticias((prev) => prev.map((n) => (n.id === form.id ? { ...form } : n)));
-    } else {
-      // crear nuevo
-      const nuevo = {
-        ...form,
-        id: Date.now().toString(),
-        fecha: new Date().toLocaleString("es-CO", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        shortDesc: form.shortDesc || form.contenido.substring(0, 120),
-      };
-      setNoticias((prev) => [nuevo, ...prev]);
+    const fd = new FormData();
+    fd.append("titulo", form.titulo);
+    fd.append("shortDesc", form.shortDesc || form.contenido.slice(0, 120));
+    fd.append("contenido", form.contenido);
+    fd.append(
+      "fechaPublicacion",
+      form.fechaPublicacion || new Date().toISOString()
+    );
+    if (imagenFile) fd.append("imagen", imagenFile);
+    
+    let actionTitle = '';
+
+    try {
+      if (form.id) {
+        await axios.patch(`${API_URL}/${form.id}`, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        actionTitle = 'Noticia Actualizada';
+      } else {
+        await axios.post(API_URL, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        actionTitle = 'Noticia Publicada';
+      }
+      
+      Swal.fire({
+        icon: 'success',
+        title: actionTitle,
+        text: 'La noticia se ha guardado con éxito.',
+        showConfirmButton: false,
+        timer: 1800
+      });
+      
+      fetchNoticias();
+      resetForm();
+    } catch (err) {
+      console.error("Error guardando noticia:", err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de Publicación',
+        text: 'Hubo un problema al guardar la noticia. Consulta la consola.',
+      });
     }
-
-    resetForm();
   };
 
-  const handleEdit = (id) => {
-    const item = noticias.find((n) => n.id === id);
-    if (!item) return;
-    setForm({ ...item }); // llena el formulario con la noticia
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const resetForm = () => {
+    setForm({
+      id: null,
+      titulo: "",
+      shortDesc: "",
+      contenido: "",
+      fechaPublicacion: "",
+      imagen: "",
+    });
+    setImagenFile(null);
   };
 
-  const handleDelete = (id) => {
-    if (!confirm("¿Eliminar esta noticia?")) return;
-    setNoticias((prev) => prev.filter((n) => n.id !== id));
+  const handleEdit = (n) => {
+    setForm({
+      id: n.id,
+      titulo: n.titulo,
+      shortDesc: n.shortDesc,
+      contenido: n.contenido,
+      fechaPublicacion: n.fechaPublicacion
+        ? new Date(n.fechaPublicacion).toISOString().slice(0, 16)
+        : "",
+      imagen: n.imagen
+        ? `http://localhost:3000/uploads/news/${n.imagen}`
+        : "",
+    });
+  };
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: '¿Eliminar Noticia?',
+      text: "¿Estás seguro de que quieres borrar esta noticia?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrar',
+      cancelButtonText: 'No, cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${API_URL}/${id}`);
+        fetchNoticias();
+        Swal.fire('Borrado!', 'La noticia ha sido eliminada.', 'info');
+      } catch (err) {
+        console.error("Error eliminando noticia:", err);
+        Swal.fire('Error', 'No se pudo eliminar la noticia.', 'error');
+      }
+    }
   };
 
   return (
     <div className="admin-noticias">
-      <h1>Crear, editar o eliminar noticia:</h1>
-      <form className="noticia-form" onSubmit={handleSubmit}>
-        <input
-          name="titulo"
-          value={form.titulo}
-          onChange={handleChange}
-          placeholder="Título de la noticia"
-        />
-        <input
-          name="shortDesc"
-          value={form.shortDesc}
-          onChange={handleChange}
-          placeholder="Descripción corta"
-        />
-        <textarea
-          name="contenido"
-          value={form.contenido}
-          onChange={handleChange}
-          placeholder="Contenido de la noticia"
-          rows={6}
-        />
-        <input type="file" accept="image/*" onChange={handleImage} />
-        {form.imagen && (
-          <img
-            src={form.imagen}
-            alt="preview"
-            style={{ maxWidth: 200, borderRadius: 8, marginTop: 8 }}
+      <div className="seccion-formulario">
+        <h2>Crear Noticias:</h2>
+
+        <form onSubmit={handleSubmit} className="noticia-form">
+          <input
+            type="text"
+            placeholder="Título"
+            value={form.titulo}
+            onChange={(e) => setForm({ ...form, titulo: e.target.value })}
+            required
           />
-        )}
+          <input
+            type="text"
+            placeholder="Descripción corta"
+            value={form.shortDesc}
+            onChange={(e) => setForm({ ...form, shortDesc: e.target.value })}
+          />
+          <textarea
+            placeholder="Contenido de la noticia"
+            rows={6}
+            value={form.contenido}
+            onChange={(e) => setForm({ ...form, contenido: e.target.value })}
+            required
+          />
+          <input type="file" accept="image/*" onChange={handleImage} />
 
-        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <button type="submit">{form.id ? "Actualizar" : "Crear"}</button>
-          <button
-            type="button"
-            onClick={() => {
-              resetForm();
-            }}
-          >
-            Limpiar
-          </button>
-        </div>
-      </form>
+          {form.imagen && (
+            <img
+              src={form.imagen}
+              alt="Previsualización"
+              style={{ width: 150, borderRadius: 8, marginTop: 8 }}
+            />
+          )}
 
-      <section className="noticias-lista">
-        {noticias.length === 0 ? (
-          <p>No hay noticias aún.</p>
-        ) : (
-          noticias.map((n) => (
-            <article className="noticia-card" key={n.id}>
-              {n.imagen && <img src={n.imagen} alt={n.titulo} />}
-              <div className="card-body">
-                <h3>{n.titulo}</h3>
-                <p className="fecha">{n.fecha}</p>
-                <p>{n.shortDesc}</p>
-                <div className="acciones">
-                  <button onClick={() => handleEdit(n.id)}>✏️ Editar</button>
-                  <button onClick={() => handleDelete(n.id)}>🗑️ Eliminar</button>
+          <input
+            type="datetime-local"
+            value={form.fechaPublicacion}
+            onChange={(e) =>
+              setForm({ ...form, fechaPublicacion: e.target.value })
+            }
+          />
+
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <button type="submit">
+              {form.id ? "Actualizar" : "Crear"} Noticia
+            </button>
+            {form.id && (
+              <button type="button" onClick={resetForm}>
+                Cancelar edición
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+
+      <div className="seccion-noticias">
+        <h2>Noticias registradas</h2>
+        <div className="noticias-lista">
+          {noticias.length === 0 ? (
+            <p>No hay noticias aún.</p>
+          ) : (
+            noticias.map((n) => (
+              <div key={n.id} className="noticia-card">
+                {n.imagen && (
+                  <img
+                    src={`http://localhost:3000/uploads/news/${n.imagen}`}
+                    alt={n.titulo}
+                  />
+                )}
+                <div className="noticia-card-content">
+                  <h4>{n.titulo}</h4>
+                  <div className="fecha">
+                    {new Date(n.fechaPublicacion).toLocaleString("es-CO", {
+                      dateStyle: "medium",
+                    })}
+                  </div>
+                  <p>{n.shortDesc}</p>
+                  <div className="acciones">
+                    <button onClick={() => handleEdit(n)}>Editar</button>
+                    <button onClick={() => handleDelete(n.id)}>Eliminar</button>
+                  </div>
                 </div>
               </div>
-            </article>
-          ))
-        )}
-      </section>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 }

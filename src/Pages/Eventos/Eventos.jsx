@@ -13,7 +13,7 @@ export default function Eventos() {
 
   return (
     <div className="eventos-publicos">
-      <h1>🎉 Próximos Eventos</h1>
+      <h1>Eventos 🎉</h1>
 
       {eventos.length === 0 ? (
         <p>No hay eventos programados en este momento.</p>
@@ -21,7 +21,6 @@ export default function Eventos() {
         <div className="eventos-grid">
           {eventos.map((ev) => (
             <article className="evento-card" key={ev.id}>
-              {/* 🖼️ Mostrar imagen del evento si existe */}
               {ev.imagen && (
                 <img
                   src={`http://localhost:3000/uploads/events/${ev.imagen}`}
@@ -33,7 +32,6 @@ export default function Eventos() {
               <div className="evento-body">
                 <h2>{ev.nombre}</h2>
 
-                {/* 📅 Fecha y hora corregidas */}
                 <p className="fecha">
                   {ev.fechaHora ? (
                     <>
@@ -54,13 +52,10 @@ export default function Eventos() {
                   )}
                 </p>
 
-                {/* 📍 Lugar */}
                 {ev.lugar && <p className="lugar">📍 {ev.lugar}</p>}
 
-                {/* 📝 Descripción */}
                 <p className="desc">{ev.descripcion}</p>
 
-                {/* 🔗 Link */}
                 {ev.link && (
                   <a
                     href={ev.link}

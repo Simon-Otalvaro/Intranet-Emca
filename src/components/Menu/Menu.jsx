@@ -22,7 +22,6 @@ export default function Menu() {
 
   return (
     <>
-      {/* Botón hamburguesa */}
       <button
         className={`menu-btn ${open ? "open" : ""}`}
         onClick={() => setOpen(!open)}
@@ -33,12 +32,9 @@ export default function Menu() {
         <span></span>
       </button>
 
-      {/* Overlay */}
       {open && <div className="overlay" onClick={() => setOpen(false)}></div>}
 
-      {/* Drawer */}
       <nav className={`menu-drawer ${open ? "active" : ""}`}>
-        {/* Encabezado con logo y título */}
         <div className="menu-header">
           <img src="src/assets/images/logo-color.png" alt="Logo Empresa" />
           <h1>IntraNet EMCA</h1>

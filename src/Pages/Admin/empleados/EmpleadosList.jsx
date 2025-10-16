@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import "./Empleados.css";
 
 export default function EmpleadosList() {
@@ -20,9 +21,27 @@ export default function EmpleadosList() {
 
   const API_URL = "http://localhost:3000/empleados";
 
-  useEffect(() => {
-    fetchEmpleados();
-  }, []);
+  function parseDateOnly(dateStr) {
+    if (!dateStr) return null;
+    // Si viene con T, corta antes de la T
+    const pure = dateStr.split("T")[0];
+    const parts = pure.split("-");
+    if (parts.length !== 3) return null;
+    const year = Number(parts[0]);
+    const month = Number(parts[1]); // 1..12
+    const day = Number(parts[2]);
+    return new Date(year, month - 1, day);
+  }
+
+  function formatDateOnlyToLocale(dateStr, locale = "es-CO") {
+    const d = parseDateOnly(dateStr);
+    if (!d) return "";
+    return d.toLocaleDateString(locale, {
+      day: "2-digit",
+      month: "numeric",
+      year: "numeric",
+    });
+  }
 
   const fetchEmpleados = async (nombre = "") => {
     try {
@@ -39,11 +58,14 @@ export default function EmpleadosList() {
     }
   };
 
+  useEffect(() => {
+    fetchEmpleados();
+  }, []);
+
   const handleBuscar = (e) => {
     const valor = e.target.value;
     setBusqueda(valor);
 
-    // Filtrado en frontend
     if (valor.trim() === "") {
       fetchEmpleados();
     } else {
@@ -55,12 +77,29 @@ export default function EmpleadosList() {
   };
 
   const handleEliminar = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este empleado?")) return;
-    try {
-      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      fetchEmpleados(busqueda);
-    } catch (err) {
-      alert("Error al eliminar empleado");
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡El empleado será eliminado permanentemente!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        fetchEmpleados(busqueda);
+        Swal.fire(
+          "¡Eliminado!",
+          "El empleado ha sido eliminado correctamente.",
+          "success"
+        );
+      } catch (err) {
+        Swal.fire("Error", "Error al eliminar el empleado.", "error");
+      }
     }
   };
 
@@ -77,12 +116,18 @@ export default function EmpleadosList() {
   };
 
   const handleAbrirModalEditar = (empleado) => {
+    const fechaISO = empleado.fecha_nacimiento
+      ? parseDateOnly(empleado.fecha_nacimiento)
+      : null;
+
     setFormEmpleado({
       nombre: empleado.nombre,
       cedula: empleado.cedula,
       cargo: empleado.cargo,
       area: empleado.area,
-      fecha_nacimiento: empleado.fecha_nacimiento.split("T")[0],
+      fecha_nacimiento: fechaISO
+        ? fechaISO.toISOString().slice(0, 10)
+        : "",
     });
     setEmpleadoActual(empleado);
     setEditando(true);
@@ -101,26 +146,49 @@ export default function EmpleadosList() {
 
   const handleGuardar = async (e) => {
     e.preventDefault();
+
+    if (!formEmpleado.nombre.trim() || !formEmpleado.cedula.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos requeridos",
+        text: "El nombre y la cédula son obligatorios.",
+      });
+      return;
+    }
+
     try {
       const method = editando ? "PUT" : "POST";
-      const url = editando
-        ? `${API_URL}/${empleadoActual.id}`
-        : API_URL;
+      const url = editando ? `${API_URL}/${empleadoActual.id}` : API_URL;
+      const payload = { ...formEmpleado };
 
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formEmpleado),
+        body: JSON.stringify(payload),
       });
 
-      if (!res.ok)
-        throw new Error(editando ? "Error al actualizar" : "Error al crear");
+      if (!res.ok) {
+        const errorText = editando ? "Error al actualizar" : "Error al crear";
+        throw new Error(errorText);
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: editando ? "Actualizado!" : "Guardado!",
+        text: `El empleado ha sido ${editando ? "actualizado" : "registrado"} correctamente.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
       await fetchEmpleados();
       setShowModal(false);
       setEmpleadoActual(null);
     } catch (err) {
-      alert(err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error de Guardado",
+        text: `Ocurrió un error: ${err.message}`,
+      });
     }
   };
 
@@ -170,7 +238,7 @@ export default function EmpleadosList() {
                   <td>{emp.cedula}</td>
                   <td>{emp.cargo}</td>
                   <td>{emp.area}</td>
-                  <td>{new Date(emp.fecha_nacimiento).toLocaleDateString()}</td>
+                  <td>{formatDateOnlyToLocale(emp.fecha_nacimiento)}</td>
                   <td>
                     <button
                       className="btn-edit"
@@ -182,7 +250,7 @@ export default function EmpleadosList() {
                       className="btn-delete"
                       onClick={() => handleEliminar(emp.id)}
                     >
-                      🗑️ Eliminar
+                      🗑️ Eliminar 
                     </button>
                   </td>
                 </tr>

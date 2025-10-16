@@ -1,7 +1,7 @@
 /* ===== Estilos para el módulo de Empleados ===== */
 
 :root {
-  --color-principal: #2563eb; /* Azul profesional */
+  --color-principal: #2563eb;
   --color-secundario: #1e40af;
   --color-fondo: #f8fafc;
   --color-borde: #e2e8f0;
@@ -115,16 +115,27 @@ body {
 }
 
 /* ===== Botones de acción ===== */
-.btn-edit,
-.btn-delete {
+.btn-edit{
   border: none;
   border-radius: var(--radius);
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 0.6rem;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
   transition: var(--transicion);
   margin-right: 0.3rem;
+}
+
+.btn-delete {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.4rem 0.2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transicion);
+  margin-right: 0.3rem;
+  margin-top: 10px;
 }
 
 .btn-edit {

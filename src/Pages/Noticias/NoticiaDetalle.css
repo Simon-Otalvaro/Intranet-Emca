@@ -1,44 +1,99 @@
+/* === CONTENEDOR PRINCIPAL === */
 .detalle-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", sans-serif;
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", system-ui, sans-serif;
+  color: #333;
+  overflow: hidden;
 }
 
+/* === IMAGEN DESTACADA === */
 .detalle-img {
   width: 100%;
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
 }
 
+/* === TITULO === */
 .detalle-container h1 {
-  margin: 0.5rem 0;
-  color: #003366;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a2b49;
+  text-align: center;
+  margin: 0.8rem 0 0.6rem;
+  line-height: 1.3;
 }
 
+/* === FECHA === */
 .fecha {
-  font-size: 0.9rem;
-  color: #777;
-  margin-bottom: 1rem;
+  display: block;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #3498db;
+  font-weight: 600;
+  margin-bottom: 1.8rem;
 }
 
+/* === CONTENIDO === */
 .contenido {
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #444;
+  text-align: justify;
+  white-space: pre-line; 
+  overflow-wrap: break-word;
 }
 
+.contenido p {
+  margin-bottom: 1.2rem;
+}
+
+.contenido strong {
+  color: #2c3e50;
+}
+
+.contenido em {
+  color: #555;
+  font-style: italic;
+}
+
+/* === BOTÓN VOLVER === */
 .volver-btn {
   display: inline-block;
-  background: #0056a6;
+  margin-top: 2rem;
+  background: #3498db;
   color: white;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
   text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
 }
 
 .volver-btn:hover {
-  background: #003366;
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* === ANIMACIÓN DE APARICIÓN === */
+.detalle-container {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

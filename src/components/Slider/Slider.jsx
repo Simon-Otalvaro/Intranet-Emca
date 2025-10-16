@@ -14,17 +14,29 @@ export default function Slider() {
       setCurrentIndex((prevIndex) =>
         prevIndex === images.length - 1 ? 0 : prevIndex + 1
       );
-    }, 3000); // cada 3 segundos
+    }, 3000); 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="slider">
-      <img
-        src={images[currentIndex]}
-        alt={`slide-${currentIndex}`}
-        className="slide-image"
-      />
+      {images.map((imgSrc, index) => (
+        <img
+          key={index}
+          src={imgSrc}
+          alt={`slide-${index}`}
+          className={`slide-image ${index === currentIndex ? 'active' : ''}`}
+        />
+      ))}
+      <div className="slider-dots">
+        {images.map((_, index) => (
+          <span
+            key={index}
+            className={`dot ${index === currentIndex ? 'active' : ''}`}
+            onClick={() => setCurrentIndex(index)}
+          ></span>
+        ))}
+      </div>
     </div>
   );
 }

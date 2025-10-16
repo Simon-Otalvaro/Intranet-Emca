@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Noticias.css";
 
-const STORAGE_KEY = "intranet_noticias";
-
 export default function Noticias() {
   const [noticias, setNoticias] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      setNoticias(raw ? JSON.parse(raw) : []);
-    } catch {
-      setNoticias([]);
-    }
+    const fetchNoticias = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/news");
+        setNoticias(res.data);
+      } catch (error) {
+        console.error("Error al obtener noticias:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNoticias();
   }, []);
+
+  if (loading) return <p>Cargando noticias...</p>;
 
   return (
     <div className="noticias-container">
@@ -25,12 +33,26 @@ export default function Noticias() {
         <div className="noticias-grid">
           {noticias.map((n) => (
             <div className="noticia-card" key={n.id}>
-              {n.imagen && <img src={n.imagen} alt={n.titulo} />}
+              {n.imagen && (
+  <img
+    src={`http://localhost:3000/uploads/news/${n.imagen}`}
+    alt={n.titulo}
+  />
+)}
+
               <div className="noticia-content">
                 <h2>{n.titulo}</h2>
-                <p className="fecha">{n.fecha}</p>
+                <p className="fecha">
+                  {new Date(n.fechaPublicacion).toLocaleDateString("es-CO", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </p>
                 <p>{n.shortDesc}</p>
-                <Link to={`/noticias/${n.id}`} className="ver-mas">Leer más →</Link>
+                <Link to={`/noticias/${n.id}`} className="ver-mas">
+                  Leer más →
+                </Link>
               </div>
             </div>
           ))}

@@ -16,7 +16,7 @@ export default function Login({ onClose }) {
   const validUsers = { admin: "admin123", comunicaciones: "comu123" };
 
   if (validUsers[username] && validUsers[username] === password) {
-    login(username); // ya guarda {username, role}
+    login(username); 
     if (username === "admin") navigate("/admin");
     if (username === "comunicaciones") navigate("/comunicaciones");
     if (onClose) onClose();

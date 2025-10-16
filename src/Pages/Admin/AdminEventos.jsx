@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "./AdminEventos.css";
 
 const API_URL = "http://localhost:3000/eventos";
@@ -42,7 +43,11 @@ export default function AdminEventos() {
     e.preventDefault();
 
     if (!form.titulo.trim() || !form.descripcion.trim() || !form.fechaHora) {
-      alert("Completa los campos obligatorios: título, descripción y fecha.");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos Incompletos',
+        text: 'Debes completar el título, la descripción y la fecha/hora del evento.',
+      });
       return;
     }
 
@@ -54,25 +59,38 @@ export default function AdminEventos() {
       if (form.lugar) fd.append("lugar", form.lugar);
       if (form.link) fd.append("link", form.link);
       if (imagenFile) fd.append("imagen", imagenFile);
+      
+      let actionTitle = '';
 
       if (form.id) {
-        // Actualizar evento existente
         await axios.put(`${API_URL}/${form.id}`, fd, {
           headers: { "Content-Type": "multipart/form-data" },
         });
+        actionTitle = '¡Evento Actualizado!';
       } else {
-        // Crear nuevo evento
         await axios.post(API_URL, fd, {
           headers: { "Content-Type": "multipart/form-data" },
         });
+        actionTitle = '¡Evento Creado!';
       }
 
-      alert("Evento guardado correctamente.");
+      Swal.fire({
+        icon: 'success',
+        title: actionTitle,
+        text: 'Los cambios se han guardado correctamente.',
+        showConfirmButton: false,
+        timer: 1800 
+      });
+      
       fetchEventos();
       resetForm();
     } catch (err) {
       console.error("Error guardando evento:", err);
-      alert("Ocurrió un error al guardar el evento. Revisa la consola.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al Guardar',
+        text: 'Ocurrió un error al guardar el evento. Revisa la consola.',
+      });
     }
   };
 
@@ -104,12 +122,34 @@ export default function AdminEventos() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este evento?")) return;
-    try {
-      await axios.delete(`${API_URL}/${id}`);
-      fetchEventos();
-    } catch (err) {
-      console.error("Error eliminando evento:", err);
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esta eliminación!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${API_URL}/${id}`);
+        fetchEventos();
+        Swal.fire(
+          '¡Eliminado!',
+          'El evento ha sido eliminado correctamente.',
+          'success'
+        );
+      } catch (err) {
+        console.error("Error eliminando evento:", err);
+        Swal.fire(
+          'Error',
+          'No se pudo eliminar el evento.',
+          'error'
+        );
+      }
     }
   };
 
